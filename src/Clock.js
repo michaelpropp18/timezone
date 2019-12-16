@@ -4,6 +4,7 @@ class Clock extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            continent: 'Europe',
             city: props.city,
             time: new Date(),
             offset: parseInt(props.offset),

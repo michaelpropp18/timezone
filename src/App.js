@@ -1,11 +1,18 @@
 import React from 'react';
 import './App.css';
 import Clock from './Clock.js';
-import AddCity from './AddCity.js';
+import AddClock from './AddClock.js';
 
 import axios from 'axios';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      clocks: [],
+    }
+    this.createClock = this.createClock.bind(this);
+  }
   getOffset(continent, city) {
     let localOffset = 0;
     return axios.get(`http://worldtimeapi.org/api/ip`)
@@ -18,17 +25,21 @@ class App extends React.Component {
     })
   }
   createClock(clockData) {
-    console.log(clockData.city);
+    this.setState(state => ({
+      clocks: [clockData, ...state.clocks],
+    }));
   }
   render() {
     this.getOffset('Europe', 'London')
     return (
       <div className="App">
         <h1>World Clock</h1>
-        <AddCity onSubmit={this.createClock} />
-        <Clock city="Atlanta" offset='0'/>
-        <Clock city="London" offset='5'/>
-        <Clock city="Chicago" offset='-1'/>
+        <AddClock onSubmit={this.createClock} />
+        {this.state.clocks && this.state.clocks.map(clock =>
+           <Clock key={clock.id}
+           city={clock.city} 
+           offset={clock.offset}/>
+        )}
         <header className="App-header">
           <p>
             Edit <code>src/App.js</code> and save to reload.
