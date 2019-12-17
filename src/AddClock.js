@@ -50,12 +50,17 @@ class AddClock extends React.Component {
         })
         .then(res => {
             if (!this.state.error) {
-                this.setState(state => ({id: state.id + 1}));
                 this.props.onSubmit({
                     city: this.state.city, 
                     offset: res,
                     id: this.state.id
                 });
+                this.setState(state => ({
+                    id: state.id + 1,
+                    url: '',
+                    error: false,
+                    city: ''
+                }));
             } 
         })
     }
